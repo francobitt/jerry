@@ -24,5 +24,7 @@
   "loop_window":      5,
   "max_loop_repeats": 3,
 
+  "model_timeout_s": 120,
+
   "schedule": null
 }

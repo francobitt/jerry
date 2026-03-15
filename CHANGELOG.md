@@ -1,5 +1,14 @@
 # Changelog
 
+## jerry0.4.1 — 2026-03-15
+
+### Added
+- **Model timeout** — if Ollama does not return a response within `model_timeout_s` seconds the run is killed immediately with a clear error message; set `model_timeout_s` to `0` to disable; default `120`
+- New config key: `model_timeout_s` (int)
+- `ollama_chat` now uses `MODEL_TIMEOUT_S` as the `httpx` client timeout (replaces the hard-coded 300 s); `asyncio.wait_for` provides a second enforcement layer inside `run_agent` via `_timed_chat`
+
+---
+
 ## jerry0.4 — 2026-03-15
 
 ### Added

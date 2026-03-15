@@ -86,6 +86,11 @@ Jerry/
 | `loop_window` | int | Number of past step fingerprints to compare against (default `5`) |
 | `max_loop_repeats` | int | Consecutive repeats before hard-stopping with a summary (default `3`) |
 
+### Model timeout
+| Key | Type | Description |
+|-----|------|-------------|
+| `model_timeout_s` | int | Seconds to wait for a model response before killing the run; `0` = disabled (default `120`) |
+
 ### Scheduling
 | Key | Type | Description |
 |-----|------|-------------|

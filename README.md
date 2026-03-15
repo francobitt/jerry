@@ -68,6 +68,7 @@ ollama pull qwen3-vl:30b
 | `human_in_loop` | Pause before actions matching `confirm_keywords` for manual approval |
 | `retry_enabled` | Retry failed tool calls up to `max_retries` times |
 | `context_compress_after` | Summarise old message history after N turns; `0` = disabled |
+| `model_timeout_s` | Kill the run if Ollama doesn't respond within this many seconds; `0` = disabled |
 | `schedule` | Cron expression for recurring runs (e.g. `"0 * * * *"`); `null` = run once |
 
 ## Skills
@@ -120,6 +121,7 @@ Leave `SKILL = None` (the default) to use the raw `TASK` string — existing beh
 - **Retry & error recovery** — transient tool failures are retried with backoff
 - **Context compression** — older turns are summarised when history grows too long
 - **Loop detection** — repeated action fingerprints are caught, re-execution is skipped, and the model is nudged to try a different approach; only unique actions count against the step budget
+- **Model timeout** — if Ollama stops responding the run is killed after `model_timeout_s` seconds with a clear error message
 - **Task scheduling** — standard cron expressions run the task repeatedly; each run is fully isolated
 
 ## Run output
