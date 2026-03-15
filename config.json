@@ -20,5 +20,9 @@
 
   "context_compress_after": 30,
 
+  "loop_detection":   true,
+  "loop_window":      5,
+  "max_loop_repeats": 3,
+
   "schedule": null
 }

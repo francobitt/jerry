@@ -79,6 +79,13 @@ Jerry/
 |-----|------|-------------|
 | `context_compress_after` | int | Compress history after this many turns; `0` = disabled |
 
+### Loop detection
+| Key | Type | Description |
+|-----|------|-------------|
+| `loop_detection` | bool | Detect and handle repeated action fingerprints |
+| `loop_window` | int | Number of past step fingerprints to compare against (default `5`) |
+| `max_loop_repeats` | int | Consecutive repeats before hard-stopping with a summary (default `3`) |
+
 ### Scheduling
 | Key | Type | Description |
 |-----|------|-------------|

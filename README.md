@@ -119,6 +119,7 @@ Leave `SKILL = None` (the default) to use the raw `TASK` string — existing beh
 - **Human-in-the-loop** — configurable keyword list triggers a confirmation widget before dangerous actions
 - **Retry & error recovery** — transient tool failures are retried with backoff
 - **Context compression** — older turns are summarised when history grows too long
+- **Loop detection** — repeated action fingerprints are caught, re-execution is skipped, and the model is nudged to try a different approach; only unique actions count against the step budget
 - **Task scheduling** — standard cron expressions run the task repeatedly; each run is fully isolated
 
 ## Run output

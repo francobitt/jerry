@@ -1,5 +1,15 @@
 # Changelog
 
+## jerry0.4 — 2026-03-15
+
+### Added
+- **Loop detection** — `run_agent` now tracks an action fingerprint (`frozenset` of `(tool_name, sorted_args_json)`) for each step and compares it against the last `loop_window` steps; on a repeat, tool execution is skipped and a nudge is injected so the model tries a different approach; after `max_loop_repeats` consecutive repeats the run ends gracefully with a summary
+- Only unique (non-repeated) actions count against the step budget — `steps_taken` in artifacts now reflects distinct actions, not total loop iterations
+- Step header now shows both total and unique step counts: `Step N / MAX  (unique: U)`
+- Three new config keys: `loop_detection` (bool), `loop_window` (int), `max_loop_repeats` (int)
+
+---
+
 ## jerry0.3 — 2026-03-15
 
 ### Added
