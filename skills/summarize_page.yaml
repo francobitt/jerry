@@ -1,0 +1,8 @@
+description: Navigate to a URL and produce a structured summary of the page content.
+
+args:
+  url: The full URL of the page to summarize (e.g. https://example.com)
+
+task_template: |
+  Go to {url} and summarise the page content.
+  Structure your summary with: (1) page title, (2) main topic, (3) key points as a bullet list.

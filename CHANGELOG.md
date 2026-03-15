@@ -1,5 +1,19 @@
 # Changelog
 
+## jerry0.3 — 2026-03-15
+
+### Added
+- **Skills system** — reusable, parameterised task templates defined in `skills/<name>.yaml`; each skill specifies a `task_template` with `{variable}` placeholders, optional `system_prompt_extension`, and optional `args` documentation for validation messages
+- Three built-in skills: `summarize_page`, `login`, `search_and_extract`
+- New notebook cell 8: `load_skill()` + `_resolve_task()` — loads, validates, and renders a skill into a resolved task string and effective system prompt
+- `SKILL` / `SKILL_ARGS` module-level variables in cell 7 to invoke skills (leave `SKILL = None` to use the raw `TASK` string — fully backward-compatible)
+- `run_agent` now accepts an optional `system_prompt` parameter to support per-skill prompt extensions without mutating the global
+- `save_artifacts` now accepts an optional `task` parameter so `result.json` records the rendered task (with real argument values) rather than the raw template string
+- Skills work with scheduled runs — `_scheduled_run` also uses `_resolve_task()`
+- New dependency: `pyyaml`
+
+---
+
 ## jerry0.2 — 2026-03-15
 
 ### Added

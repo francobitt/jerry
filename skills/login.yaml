@@ -1,0 +1,16 @@
+description: Log in to a web application using provided credentials.
+
+args:
+  url:      The full URL of the login page
+  username: Account username or email address
+  password: Account password
+
+task_template: |
+  Navigate to {url}.
+  Log in with username "{username}" and password "{password}".
+  Confirm that login was successful by verifying the authenticated home page or dashboard.
+
+system_prompt_extension: |
+  When performing login tasks:
+  - If a CAPTCHA or 2FA prompt appears, stop and report it rather than guessing.
+  - After a successful login, describe what page you landed on as confirmation.

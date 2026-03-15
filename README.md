@@ -70,6 +70,46 @@ ollama pull qwen3-vl:30b
 | `context_compress_after` | Summarise old message history after N turns; `0` = disabled |
 | `schedule` | Cron expression for recurring runs (e.g. `"0 * * * *"`); `null` = run once |
 
+## Skills
+
+Skills are reusable, parameterised task templates stored in `skills/<name>.yaml`. To use one, set `SKILL` and `SKILL_ARGS` in cell 7 of the notebook (instead of editing `TASK` directly):
+
+```python
+SKILL      = "login"
+SKILL_ARGS = {"url": "https://example.com/login", "username": "alice", "password": "secret"}
+```
+
+Three built-in skills are included:
+
+| Skill | Required args |
+|-------|--------------|
+| `summarize_page` | `url` |
+| `login` | `url`, `username`, `password` |
+| `search_and_extract` | `query`, `result_count` |
+
+### Adding your own skill
+
+Create `skills/<name>.yaml`:
+
+```yaml
+description: A one-line description of what this skill does.
+
+args:
+  url: The target URL
+
+task_template: |
+  Go to {url} and do something useful.
+
+system_prompt_extension: |
+  Optional extra instructions appended to the base system prompt for this skill only.
+```
+
+`task_template` supports standard Python `{variable}` placeholders. Any key listed in `args` must be provided in `SKILL_ARGS` — missing args raise a clear error before the browser or LLM are touched.
+
+Leave `SKILL = None` (the default) to use the raw `TASK` string — existing behaviour is unchanged.
+
+---
+
 ## Features
 
 - **ReAct loop** — Thought → Action → Observation, up to `max_steps` iterations

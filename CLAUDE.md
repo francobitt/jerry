@@ -21,6 +21,10 @@ Jerry is a local ReAct-style browser automation agent. It runs entirely on-devic
 Jerry/
 ├── agent.ipynb      # All agent logic — edit SYSTEM_PROMPT and TASK here
 ├── config.json      # Runtime configuration (see below)
+├── skills/          # Reusable skill definitions (YAML)
+│   ├── summarize_page.yaml
+│   ├── login.yaml
+│   └── search_and_extract.yaml
 ├── .env             # OLLAMA_BASE_URL (not committed)
 ├── .env.example     # Template for .env
 ├── requirements.txt # Python dependencies
@@ -108,17 +112,18 @@ There are no build, lint, or test commands — all logic lives in the notebook a
 | 2 | Imports + `nest_asyncio.apply()` |
 | 3 | Config & environment loading, `npx` resolution |
 | 4–5 | **`SYSTEM_PROMPT`** — edit here |
-| 6–7 | **`TASK`** — set what the agent should do |
-| 8 | `ollama_chat()` + `check_ollama()` |
-| 9 | `filter_tools()` + `to_ollama_tools()` |
-| 10 | `extract_observation()` + `capture_screenshot()` + `_gif_frames` buffer |
-| 11 | `make_run_dir()` + `save_artifacts()` + `save_gif()` |
-| 12 | `confirm_action()` — human-in-the-loop widget |
-| 13 | `load_session()` + `save_session()` |
-| 14 | `maybe_compress()` + `call_tool_safely()` |
-| 15 | `run_agent()` — ReAct loop |
-| 16 | `start_scheduler()` + `stop_scheduler()` |
-| 17 | `main()` + **Run** |
+| 6–7 | **`TASK`** / `SKILL` + `SKILL_ARGS` — set what the agent should do |
+| 8 | `load_skill()` + `_resolve_task()` — skills loader |
+| 9 | `ollama_chat()` + `check_ollama()` |
+| 10 | `filter_tools()` + `to_ollama_tools()` |
+| 11 | `extract_observation()` + `capture_screenshot()` + `_gif_frames` buffer |
+| 12 | `make_run_dir()` + `save_artifacts()` + `save_gif()` |
+| 13 | `confirm_action()` — human-in-the-loop widget |
+| 14 | `load_session()` + `save_session()` |
+| 15 | `maybe_compress()` + `call_tool_safely()` |
+| 16 | `run_agent()` — ReAct loop |
+| 17 | `start_scheduler()` + `stop_scheduler()` |
+| 18 | `main()` + **Run** |
 
 ## Architecture notes
 - `npx` is resolved at startup via `shutil.which` with fallback to common install paths; a clear error is raised if Node is not installed

@@ -1,0 +1,16 @@
+description: Perform a web search and extract structured data from the top results.
+
+args:
+  query:        The search query string
+  result_count: How many top results to extract
+
+task_template: |
+  Go to https://www.google.com and search for: {query}
+  Extract the top {result_count} organic search results.
+  For each result return: title, URL, and the snippet shown on the search page.
+  Present the output as a numbered list.
+
+system_prompt_extension: |
+  When extracting search results:
+  - Focus only on organic results; ignore sponsored/ad entries.
+  - Return raw data accurately; do not paraphrase titles or snippets.

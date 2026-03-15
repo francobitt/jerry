@@ -5,3 +5,4 @@ nest_asyncio
 Pillow
 APScheduler
 ipywidgets
+pyyaml
