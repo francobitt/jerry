@@ -1,3 +1,7 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
 # Jerry — Local Browser Automation Agent
 
 ## Project overview
@@ -85,9 +89,11 @@ Jerry/
 ```bash
 brew install node          # Node.js required for npx / @playwright/mcp
 pip install -r requirements.txt
-cp .env.example .env       # then set OLLAMA_BASE_URL
+cp .env.example .env       # then set OLLAMA_BASE_URL (default: http://localhost:11434)
 ollama pull qwen3-vl:30b
 ```
+
+There are no build, lint, or test commands — all logic lives in the notebook and is executed interactively.
 
 ## Running the agent
 1. Open `agent.ipynb` in Jupyter
