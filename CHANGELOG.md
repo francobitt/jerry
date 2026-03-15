@@ -1,5 +1,19 @@
 # Changelog
 
+## jerry0.2 — 2026-03-15
+
+### Added
+- **Session persistence** — save/restore browser auth state between runs via `session_file` config key; uses `browser_save_storage_state` / `browser_load_storage_state` MCP tools
+- **Run artifacts** — on completion, structured `result.json` and `summary.txt` saved to `./runs/<timestamp>/`; `save_artifacts` config key
+- **GIF replay** — all screenshots captured during a run are stitched into `./runs/<timestamp>/replay.gif` and displayed inline; `save_gif` / `gif_frame_ms` config keys; requires `Pillow`
+- **Human-in-the-loop checkpoints** — configurable keyword list triggers an ipywidgets confirmation widget before executing dangerous actions (Proceed / Skip / Stop); `human_in_loop` / `confirm_keywords` config keys
+- **Retry & error recovery** — failed tool calls are retried with configurable backoff before surfacing as errors; `retry_enabled` / `max_retries` / `retry_delay_s` config keys
+- **Context window compression** — when message history exceeds a threshold, older turns are summarised into a single memory message to prevent token overflow; `context_compress_after` config key (0 = disabled)
+- **Task scheduling** — standard cron expressions schedule the task to run repeatedly; each run is fully isolated with its own browser session and run folder; `schedule` config key; requires `APScheduler`
+- New dependencies: `Pillow`, `APScheduler`, `ipywidgets`
+
+---
+
 ## jerry0.1 — 2026-03-15
 
 Initial release.

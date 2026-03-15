@@ -3,5 +3,22 @@
   "max_steps": 20,
   "headless": false,
   "use_vision": "auto",
-  "flash_mode": true
+  "flash_mode": true,
+
+  "session_file": null,
+
+  "save_artifacts": true,
+  "save_gif": true,
+  "gif_frame_ms": 800,
+
+  "human_in_loop": false,
+  "confirm_keywords": ["submit", "buy", "delete", "send", "login"],
+
+  "retry_enabled": true,
+  "max_retries": 3,
+  "retry_delay_s": 2,
+
+  "context_compress_after": 30,
+
+  "schedule": null
 }

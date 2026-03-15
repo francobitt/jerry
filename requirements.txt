@@ -2,3 +2,6 @@ mcp>=1.26.0
 httpx
 python-dotenv
 nest_asyncio
+Pillow
+APScheduler
+ipywidgets
