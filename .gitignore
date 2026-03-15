@@ -17,3 +17,7 @@ node_modules/
 
 # macOS
 .DS_Store
+
+# Run artifacts
+runs/
+session.json
