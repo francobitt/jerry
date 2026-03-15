@@ -1,0 +1,19 @@
+# Environment — never commit real credentials
+.env
+
+# Claude Code local config
+.claude/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Node
+node_modules/
+
+# macOS
+.DS_Store
