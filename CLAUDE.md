@@ -25,6 +25,9 @@ Jerry/
 │   ├── summarize_page.yaml
 │   ├── login.yaml
 │   └── search_and_extract.yaml
+├── credentials/         # Gitignored — one YAML per credential set
+│   └── <name>.yaml      # e.g. github.yaml: username/password/etc.
+├── credentials.example/ # Committed template — copy to credentials/ and fill in
 ├── .env             # OLLAMA_BASE_URL (not committed)
 ├── .env.example     # Template for .env
 ├── requirements.txt # Python dependencies
@@ -146,6 +149,31 @@ There are no build, lint, or test commands — all logic lives in the notebook a
 - GIF frames are collected in a module-level `_gif_frames` list; `main()` clears it at the start of each run to prevent cross-run contamination
 - Human-in-the-loop uses `asyncio.Event` for non-blocking widget confirmation compatible with `nest_asyncio`
 - Scheduled runs each get their own isolated browser session, run folder, and cleared frame buffer
+
+## Credential store
+
+Credentials live in `credentials/<name>.yaml` (gitignored). Each file is a flat key/value YAML:
+
+```yaml
+username: alice
+password: s3cr3t
+```
+
+Reference individual values anywhere in `TASK` or `SKILL_ARGS` using the `creds:name.key` token syntax — tokens are expanded by `_expand_creds()` inside `_resolve_task()` before any text reaches the model.
+
+```python
+# With a skill
+SKILL_ARGS = {
+    "url":      "https://github.com/login",
+    "username": "creds:github.username",
+    "password": "creds:github.password",
+}
+
+# With a raw task
+TASK = "Log in to https://github.com using creds:github.username and creds:github.password"
+```
+
+`credentials.example/` ships with the repo as a format reference; copy it to `credentials/` and fill in real values.
 
 ## Version control
 - Claude manages commits, tags, and `CHANGELOG.md` updates

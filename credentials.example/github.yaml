@@ -1,0 +1,8 @@
+# Example credential file.
+# Copy this directory to credentials/ and fill in your real values.
+# credentials/ is gitignored — these files are never committed.
+#
+# Reference values in TASK or SKILL_ARGS with:  creds:github.username
+#
+username: your_username_here
+password: your_password_here

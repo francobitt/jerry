@@ -109,6 +109,33 @@ system_prompt_extension: |
 
 Leave `SKILL = None` (the default) to use the raw `TASK` string — existing behaviour is unchanged.
 
+## Credentials
+
+Sensitive values (usernames, passwords, API keys) are stored in gitignored `credentials/<name>.yaml` files:
+
+```yaml
+# credentials/github.yaml
+username: alice
+password: s3cr3t
+```
+
+Reference individual values in `TASK` or `SKILL_ARGS` with the `creds:name.key` token syntax:
+
+```python
+# With the login skill
+SKILL      = "login"
+SKILL_ARGS = {
+    "url":      "https://github.com/login",
+    "username": "creds:github.username",
+    "password": "creds:github.password",
+}
+
+# With a raw task
+TASK = "Go to https://github.com/login and sign in with creds:github.username and creds:github.password"
+```
+
+Tokens are expanded before the task text reaches the model — credentials never appear in the notebook or any committed file. See `credentials.example/` for the expected file format.
+
 ---
 
 ## Features

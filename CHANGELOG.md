@@ -1,5 +1,15 @@
 # Changelog
 
+## jerry0.5 — 2026-03-15
+
+### Added
+- **Credential store** — sensitive values (usernames, passwords, API keys) are stored in gitignored `credentials/<name>.yaml` files and referenced in `TASK` or `SKILL_ARGS` with the `creds:name.key` token syntax; tokens are expanded by a new `_expand_creds()` helper before any task text reaches the model
+- `credentials.example/github.yaml` ships as a format reference — copy to `credentials/` and fill in real values
+- `credentials/` added to `.gitignore`
+- Clear `FileNotFoundError` / `KeyError` messages when a credential file or key is missing
+
+---
+
 ## jerry0.4.1 — 2026-03-15
 
 ### Added
