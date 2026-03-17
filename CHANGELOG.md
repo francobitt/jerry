@@ -1,5 +1,20 @@
 # Changelog
 
+## jerry0.6 — 2026-03-17
+
+### Added
+- **Orchestrator sub-agent system** — set `ORCHESTRATOR_TASK` to a high-level goal; an orchestrator LLM decomposes it into sub-tasks and delegates each to an isolated sub-agent with its own browser (Playwright MCP instance)
+- `spawn_subagents` synthetic tool exposed to the orchestrator: supports `mode="parallel"` (all sub-agents start simultaneously via `asyncio.gather`) and `mode="sequential"` (each sub-agent receives the previous one's result as context)
+- `SUBAGENT_MODE` variable sets the default execution mode (`"parallel"` by default)
+- `_run_one_agent()` — isolated agent runner: own `stdio_client` → `ClientSession`, own run directory, own GIF frame buffer
+- `run_orchestrator()` — orchestrator ReAct loop with timeout, step cap, and graceful fallback
+- `MAX_SUBAGENTS` config key (default 6) — hard cap on sub-agents per `spawn_subagents` call
+- `make_run_dir(prefix="")` — optional prefix param; sub-agents write to `runs/agent0_<ts>/`, `runs/agent1_<ts>/` etc.
+- `save_gif(run_dir, frames=None)` — explicit `frames` param so sub-agent GIFs don't interleave with each other or the global buffer
+- `frame_buffer` param on `run_agent()`, `extract_observation()`, and `capture_screenshot()` — passes a per-agent frame list to prevent concurrent agents from polluting each other's GIF
+
+---
+
 ## jerry0.5 — 2026-03-15
 
 ### Added

@@ -26,5 +26,7 @@
 
   "model_timeout_s": 120,
 
+  "max_subagents": 6,
+
   "schedule": null
 }

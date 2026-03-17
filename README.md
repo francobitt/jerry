@@ -109,6 +109,28 @@ system_prompt_extension: |
 
 Leave `SKILL = None` (the default) to use the raw `TASK` string — existing behaviour is unchanged.
 
+## Orchestrator (multi-agent)
+
+Set `ORCHESTRATOR_TASK` to a high-level goal. An orchestrator LLM (with no browser of its own) decomposes the goal into sub-tasks and delegates each to an isolated sub-agent — every sub-agent gets its own Playwright browser instance.
+
+```python
+ORCHESTRATOR_TASK = "Compare the price of a MacBook Pro M4 on Amazon and Best Buy, then recommend the best deal."
+SUBAGENT_MODE = "parallel"   # "parallel" | "sequential"
+```
+
+The orchestrator calls the `spawn_subagents` tool with a list of tasks and a mode:
+
+| Mode | Behaviour |
+|------|-----------|
+| `"parallel"` | All sub-tasks start simultaneously — best for independent tasks (e.g. checking multiple sites) |
+| `"sequential"` | Sub-tasks run in order; each agent receives prior results as context — best when tasks depend on each other |
+
+The orchestrator LLM decides the mode per batch and can call `spawn_subagents` multiple times, mixing modes. Each sub-agent produces its own `runs/agent<N>_<timestamp>/` folder. The `max_subagents` config key (default `6`) caps how many browsers open per call.
+
+Leave `ORCHESTRATOR_TASK = None` (the default) to use the standard single-agent path.
+
+---
+
 ## Credentials
 
 Sensitive values (usernames, passwords, API keys) are stored in gitignored `credentials/<name>.yaml` files:

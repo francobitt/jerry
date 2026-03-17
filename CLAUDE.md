@@ -94,6 +94,11 @@ Jerry/
 |-----|------|-------------|
 | `model_timeout_s` | int | Seconds to wait for a model response before killing the run; `0` = disabled (default `120`) |
 
+### Orchestrator
+| Key | Type | Description |
+|-----|------|-------------|
+| `max_subagents` | int | Max sub-agents per `spawn_subagents` call (default `6`); hard cap on parallel browser instances |
+
 ### Scheduling
 | Key | Type | Description |
 |-----|------|-------------|
@@ -127,18 +132,20 @@ There are no build, lint, or test commands — all logic lives in the notebook a
 | 2 | Imports + `nest_asyncio.apply()` |
 | 3 | Config & environment loading, `npx` resolution |
 | 4–5 | **`SYSTEM_PROMPT`** — edit here |
-| 6–7 | **`TASK`** / `SKILL` + `SKILL_ARGS` — set what the agent should do |
-| 8 | `load_skill()` + `_resolve_task()` — skills loader |
-| 9 | `ollama_chat()` + `check_ollama()` |
-| 10 | `filter_tools()` + `to_ollama_tools()` |
-| 11 | `extract_observation()` + `capture_screenshot()` + `_gif_frames` buffer |
-| 12 | `make_run_dir()` + `save_artifacts()` + `save_gif()` |
-| 13 | `confirm_action()` — human-in-the-loop widget |
-| 14 | `load_session()` + `save_session()` |
-| 15 | `maybe_compress()` + `call_tool_safely()` |
-| 16 | `run_agent()` — ReAct loop |
-| 17 | `start_scheduler()` + `stop_scheduler()` |
-| 18 | `main()` + **Run** |
+| 6 | **`ORCHESTRATOR_SYSTEM_PROMPT`** — orchestrator decomposition instructions |
+| 7–8 | **`TASK`** / `SKILL` + `SKILL_ARGS` / `ORCHESTRATOR_TASK` + `SUBAGENT_MODE` |
+| 9 | `load_skill()` + `_resolve_task()` + `_expand_creds()` — skills & credentials loader |
+| 10 | `ollama_chat()` + `check_ollama()` |
+| 11 | `filter_tools()` + `to_ollama_tools()` |
+| 12 | `extract_observation()` + `capture_screenshot()` + `_gif_frames` buffer |
+| 13 | `make_run_dir()` + `save_artifacts()` + `save_gif()` |
+| 14 | `confirm_action()` — human-in-the-loop widget |
+| 15 | `load_session()` + `save_session()` |
+| 16 | `maybe_compress()` + `call_tool_safely()` |
+| 17 | `run_agent()` — ReAct loop |
+| 18 | `_run_one_agent()` + `run_orchestrator()` — orchestrator + sub-agent runner |
+| 19 | `start_scheduler()` + `stop_scheduler()` |
+| 20 | `main()` + **Run** (dispatches to scheduler / orchestrator / single agent) |
 
 ## Architecture notes
 - `npx` is resolved at startup via `shutil.which` with fallback to common install paths; a clear error is raised if Node is not installed
@@ -146,9 +153,10 @@ There are no build, lint, or test commands — all logic lives in the notebook a
 - Ollama tool-role messages do not support the `images` field; image observations are attached as a follow-up `role: "user"` message instead
 - `tool_call_id` is included in tool response messages when the model provides an `id` on the call
 - The MCP session is opened once per `main()` call and shared across all ReAct steps
-- GIF frames are collected in a module-level `_gif_frames` list; `main()` clears it at the start of each run to prevent cross-run contamination
+- GIF frames are collected in a module-level `_gif_frames` list; `main()` clears it at the start of each run to prevent cross-run contamination; sub-agents each receive their own `frames: list` passed via `frame_buffer=` to avoid interleaving
 - Human-in-the-loop uses `asyncio.Event` for non-blocking widget confirmation compatible with `nest_asyncio`
 - Scheduled runs each get their own isolated browser session, run folder, and cleared frame buffer
+- Orchestrator sub-agents each open their own `stdio_client` → `ClientSession` — fully isolated Chromium processes; `asyncio.gather` is used for parallel mode
 
 ## Credential store
 
