@@ -1,5 +1,16 @@
 # Changelog
 
+## jerry0.6.1 — 2026-03-18
+
+### Added
+- **LM Studio backend support** — set `"backend": "lmstudio"` in `config.json` to route all LLM calls to LM Studio's OpenAI-compatible API (`/v1/chat/completions`) instead of Ollama; defaults to `"ollama"` for full backward compatibility
+- `LMSTUDIO_BASE_URL` env var (default `http://localhost:1234`); add to `.env` when using LM Studio
+- `llm_chat()` replaces `ollama_chat()` — dispatches to the correct backend and normalises responses to a consistent `{"message": {...}}` shape so no other code changes
+- `check_llm_backend()` replaces `check_ollama()` — health-checks whichever backend is active (`/v1/models` for LM Studio, `/api/tags` for Ollama)
+- Note: `flash_mode` (`think` param) and `format` (structured output) are Ollama-only and are silently ignored when `backend` is `"lmstudio"`
+
+---
+
 ## jerry0.6 — 2026-03-17
 
 ### Added

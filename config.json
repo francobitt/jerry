@@ -1,4 +1,5 @@
 {
+  "backend": "ollama",
   "model": "qwen3-vl:30b",
   "max_steps": 20,
   "headless": false,

@@ -28,7 +28,7 @@ Jerry/
 ├── credentials/         # Gitignored — one YAML per credential set
 │   └── <name>.yaml      # e.g. github.yaml: username/password/etc.
 ├── credentials.example/ # Committed template — copy to credentials/ and fill in
-├── .env             # OLLAMA_BASE_URL (not committed)
+├── .env             # OLLAMA_BASE_URL / LMSTUDIO_BASE_URL (not committed)
 ├── .env.example     # Template for .env
 ├── requirements.txt # Python dependencies
 ├── runs/            # Created at runtime — one folder per run
@@ -46,7 +46,8 @@ Jerry/
 ### Core
 | Key | Type | Description |
 |-----|------|-------------|
-| `model` | string | Ollama model name |
+| `backend` | string | LLM provider: `"ollama"` (default) or `"lmstudio"` |
+| `model` | string | Model name (passed to whichever backend is active) |
 | `max_steps` | int | Hard cap on ReAct loop iterations |
 | `headless` | bool | `true` = no browser window |
 | `use_vision` | string | `"false"` / `"true"` / `"auto"` |
@@ -187,4 +188,4 @@ TASK = "Log in to https://github.com using creds:github.username and creds:githu
 - Claude manages commits, tags, and `CHANGELOG.md` updates
 - Auto-push hook configured in `.claude/settings.local.json`: pushes to GitHub after every `git commit`
 - `.env` and `.claude/` are gitignored and never committed
-- Tag format: `jerry<major>.<minor>` (e.g. `jerry0.2`)
+- Tag format: `jerry<major>.<minor>.<patch>` — **major** = architectural overhaul or breaking change, **minor** = new feature or significant capability, **patch** = small improvement or bug fix (e.g. `jerry1.0.0`, `jerry0.7.0`, `jerry0.6.1`)
