@@ -1,9 +1,9 @@
 {
-  "backend": "ollama",
-  "model": "qwen3-vl:30b",
+  "backend": "lmstudio",
+  "model": "qwen3-coder:30b",
   "max_steps": 20,
   "headless": false,
-  "use_vision": "auto",
+  "use_vision": "false",
   "flash_mode": true,
 
   "session_file": null,
