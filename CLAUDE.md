@@ -5,10 +5,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 # Jerry — Local Browser Automation Agent
 
 ## Project overview
-Jerry is a local ReAct-style browser automation agent. It runs entirely on-device using an Ollama-hosted LLM and a Chromium browser controlled via the Playwright MCP server. All agent logic lives in a single Jupyter notebook (`agent.ipynb`).
+Jerry is a local ReAct-style browser automation agent. It runs entirely on-device using a local LLM (Ollama or LM Studio) and a Chromium browser controlled via the Playwright MCP server. All agent logic lives in a single Jupyter notebook (`agent.ipynb`).
 
 ## Stack
-- **LLM**: Ollama (`qwen3-vl:30b` by default) — served at `OLLAMA_BASE_URL` from `.env`
+- **LLM**: Ollama or LM Studio (`backend` key in `config.json`) — served at `OLLAMA_BASE_URL` / `LMSTUDIO_BASE_URL` from `.env`
 - **Browser control**: `@playwright/mcp@latest` npm package, launched as a subprocess via `npx`
 - **MCP client**: Python `mcp` SDK (`StdioServerParameters` + `stdio_client`)
 - **Notebook runtime**: Jupyter with `nest_asyncio` for async compatibility
@@ -114,8 +114,9 @@ Jerry/
 ```bash
 brew install node          # Node.js required for npx / @playwright/mcp
 pip install -r requirements.txt
-cp .env.example .env       # then set OLLAMA_BASE_URL (default: http://localhost:11434)
-ollama pull qwen3-vl:30b
+cp .env.example .env       # set OLLAMA_BASE_URL (default: http://localhost:11434)
+                           # or LMSTUDIO_BASE_URL (default: http://localhost:1234)
+ollama pull qwen3-vl:30b   # if using Ollama backend
 ```
 
 There are no build, lint, or test commands — all logic lives in the notebook and is executed interactively.
@@ -136,7 +137,7 @@ There are no build, lint, or test commands — all logic lives in the notebook a
 | 6 | **`ORCHESTRATOR_SYSTEM_PROMPT`** — orchestrator decomposition instructions |
 | 7–8 | **`TASK`** / `SKILL` + `SKILL_ARGS` / `ORCHESTRATOR_TASK` + `SUBAGENT_MODE` |
 | 9 | `load_skill()` + `_resolve_task()` + `_expand_creds()` — skills & credentials loader |
-| 10 | `ollama_chat()` + `check_ollama()` |
+| 10 | `llm_chat()` + `check_llm_backend()` — dispatches to Ollama or LM Studio |
 | 11 | `filter_tools()` + `to_ollama_tools()` |
 | 12 | `extract_observation()` + `capture_screenshot()` + `_gif_frames` buffer |
 | 13 | `make_run_dir()` + `save_artifacts()` + `save_gif()` |
